@@ -10,6 +10,7 @@ id = str(input("Enter the id: "))
 urlPri = f'https://manhwawebbackend-production.up.railway.app/chapters/see/{id}'
 maxCap = int(input("Enter the number of cap: ")) 
 name = str(input("Enter the name of the manga: "))
+
 def download(urlPri, maxCap):
     capComplete = 0
     errors_in_download = 0
