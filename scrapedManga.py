@@ -18,12 +18,11 @@ def obteinManga(url):
         jsonContent = parseJson(content)
         manga = jsonToObjManga(jsonContent)
         print(f"Obtenido: {manga._nombre} ✅ \n")
-        
-        return manga
+        download(manga)
+        return True
     else:
         print('Error al obtener el manga: '+ response.status_code)
-
-        return None
+        return False
 
 
 
@@ -54,36 +53,9 @@ def download(manga):
                 print(f"")
            
             try:
-                    # Get the content of the cap
-                    responseCap = get(url)
-                    if responseCap.ok:
-                       
-                        content= responseCap.text
-                        # Parse the content of the cap to json
-                        jsonContent = parseJson(content)    
-                        # Create an object cap from the json
-                        cap = jsonToObj(jsonContent)
-                        count = 1
-                        for img in cap.imgUrls:
-                            suffix = PurePath(img).suffix
-                            imgName = PurePath(img).name
-                            imgResponse = get(img)
-                            if imgResponse.ok:
-                                # Save the image
-                                numberFile = str(count)
-                                with open(path.join(dir_path, file_name, f'{numberFile}{suffix}'), 'wb') as file:
-                                    
-                                    file.write(imgResponse.content)
-                                                    
-                                count += 1
-                            else:
-                                print(f"Error downloading image {imgName} ❌")
-                                errors_in_download += 1
-                    
+                downloadCap(url, dir_path, file_name)    
             except Exception as e:
                 # print(f"Error: {e}")
-
-                
                 continue                           
             finally:
                 capComplete += 1
@@ -106,6 +78,33 @@ def jsonToObjManga(jsonContent):
 def refactorDirName(dir_name):
     return dir_name.replace(' ', '_').replace(':', '').replace('?', '').replace('¿', '').replace('¡', '').replace('!', '') 
 
+def downloadCap(url, dir_path, file_name):
+    # Get the content of the cap
+    responseCap = get(url)
+    if responseCap.ok:
+        content= responseCap.text
+        # Parse the content of the cap to json
+        jsonContent = parseJson(content)    
+        # Create an object cap from the json
+        cap = jsonToObj(jsonContent)
+        count = 1
+        for img in cap.imgUrls:
+            suffix = PurePath(img).suffix
+            imgName = PurePath(img).name
+            imgResponse = get(img)
+            if imgResponse.ok:
+                # Save the image
+                numberFile = str(count)
+                with open(path.join(dir_path, file_name, f'{numberFile}{suffix}'), 'wb') as file:
+                                    
+                    file.write(imgResponse.content)
+                                                    
+                    count += 1
+            else:
+                print(f"Error downloading image {imgName} ❌")
+                errors_in_download += 1
+
+
 def obteinProgress(maxCap, current):
     progress = ''
     actualProgress = current/maxCap * 10
@@ -120,7 +119,13 @@ def obteinProgress(maxCap, current):
     return progress + f' {actualProgress * 10}%'
 
 
+
+
 if __name__ == '__main__':
-    manga = obteinManga(urlPriObteinManga)
-    download(manga)
-    print(' --- Download complete --- ✅')
+    status = obteinManga(urlPriObteinManga)
+    if status:
+        print("Manga downloaded successfully ✅")
+    else:
+        print("Error downloading manga ❌")
+    
+   
