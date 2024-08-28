@@ -78,15 +78,16 @@ def download(manga):
                                 count += 1
                             else:
                                 print(f"Error downloading image {imgName} ❌")
+                                errors_in_download += 1
                     
             except Exception as e:
                 # print(f"Error: {e}")
 
-                errors_in_download += 1
+                
                 continue                           
             finally:
                 capComplete += 1
-                print(f"Total caps downloaded: {capComplete} \n ")
+                print(f"Total caps downloaded: {capComplete} | {maxCap} \n ")
                 print(f'{obteinProgress(maxCap, capComplete)} \n')
                 print(f"Errors in download: {errors_in_download} \n") 
                         
@@ -107,14 +108,16 @@ def refactorDirName(dir_name):
 
 def obteinProgress(maxCap, current):
     progress = ''
-    actualProgress = round(current/maxCap) 
+    actualProgress = current/maxCap * 10
+   
     
     for i in range(0, 10):
-        if i <= round(actualProgress / 10):
+        
+        if i <= actualProgress :
             progress += '█'
         else:
             progress += '▓'
-    return progress + f' {round(actualProgress * 10)}%'
+    return progress + f' {actualProgress * 10}%'
 
 
 if __name__ == '__main__':
