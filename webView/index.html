@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <form>
+        <label>Path de los archivos</label>
+        <input type="file" id="path" multiple
+         webkitdirectory  msdirectory odirectory directory>
+        
+
+    </form>
+
+    <div id="imgs"></div>
+</body>
+
+<script >
+    
+    function getCapters(path){
+        
+        
+    }
+
+
+
+    var pathInput = document.getElementById('path');
+    var path = ""
+    var cap = [] 
+    var imgDiv = document.getElementById('imgs')
+    
+    pathInput.addEventListener('change',async (e) =>{
+        let cap = {
+            imgUrl: []
+        }
+        
+        for (let i = 0; i < e.target.files.length; i++) {
+            var reader = new FileReader()
+            var file = e.target.files[i]
+            reader.onload = function(e){
+                var img = {
+                    id: i,
+                    src: e.target.result
+                }
+                cap.imgUrl.push(img)    
+
+            }
+            var result=  reader.readAsDataURL(file)
+        }
+        
+        cap.imgUrl = [...cap.imgUrl].sort((a, b) => a.id - b.id);
+        console.log("ORDENADO")
+        console.log(cap.imgUrl)
+        for (let i = 0; i < cap.imgUrl.length; i++) {
+                var img = document.createElement('img')
+                img.src = cap.imgUrl[i].src
+                imgDiv.appendChild(img)
+        }
+
+        
+    
+    })
+
+
+
+
+
+</script> 
+</html>

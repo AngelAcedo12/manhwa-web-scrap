@@ -34,7 +34,6 @@ def download(urlPri, maxCap):
            
             try:
                     responseCap = get(url)
-                    
                     if responseCap.ok:
                         print('--Content find--- \n') 
                         content= responseCap.text
