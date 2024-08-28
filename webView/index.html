@@ -43,15 +43,16 @@
             reader.onload = function(e){
                 var img = {
                     id: i,
-                    src: e.target.result
+                    src: e.target.result,
+                    lastDate: new Date(file.lastModifiedDate).getTime()
                 }
                 cap.imgUrl.push(img)    
-
+                console
             }
             var result=  reader.readAsDataURL(file)
         }
-        
-        cap.imgUrl = [...cap.imgUrl].sort((a, b) => a.id - b.id);
+        console.log(cap)
+        cap.imgUrl = [...cap.imgUrl].sort((a, b) => a.lastDate - b.lastDate);
         console.log("ORDENADO")
         console.log(cap.imgUrl)
         for (let i = 0; i < cap.imgUrl.length; i++) {
