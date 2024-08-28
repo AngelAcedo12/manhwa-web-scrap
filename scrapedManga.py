@@ -6,7 +6,8 @@ import json
 from cap import cap
 
 dir_saved = str(input("Enter the path to the save Manga: "))
-urlPri = str(input("Enter the path to the file: "))
+id = str(input("Enter the id: "))
+urlPri = f'https://manhwawebbackend-production.up.railway.app/chapters/see/{id}'
 maxCap = int(input("Enter the number of cap: ")) 
 name = str(input("Enter the name of the manga: "))
 def download(urlPri, maxCap):
@@ -38,8 +39,6 @@ def download(urlPri, maxCap):
                         content= responseCap.text
                         jsonContent = parseJson(content)    
                         cap = jsonToObj(jsonContent)
-                        print(f"Cap {cap.chapter} downloaded")
-
                         for img in cap.imgUrls:
                             imgName = PurePath(img).name
                             imgResponse = get(img)
@@ -72,6 +71,4 @@ def jsonToObj(jsonContent):
 
 if __name__ == '__main__':
     download(urlPri, maxCap)
-
     print(' --- Download complete --- ✅')
-    
