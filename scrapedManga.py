@@ -9,8 +9,8 @@ dir_saved = str(input("Enter the path to the save Manga: "))
 urlPri = str(input("Enter the path to the file: "))
 maxCap = int(input("Enter the number of cap: ")) 
 name = str(input("Enter the name of the manga: "))
-capComplete = 0
 def download(urlPri, maxCap):
+    capComplete = 0
     errors_in_download = 0
     dir_path = path.join(dir_saved,name)
     try:
@@ -28,7 +28,7 @@ def download(urlPri, maxCap):
             try: 
                 mkdir(path.join(dir_path, file_name),dir_fd=None)
             except Exception as e:
-                print(f"Error: {e}")
+                print(f"")
            
             try:
                     responseCap = get(url)
@@ -50,19 +50,17 @@ def download(urlPri, maxCap):
                                                     
                             else:
                                 print(f"Error downloading image {imgName} ❌")
-                    capComplete += 1
-                    print(f"Cap {cap.chapter} downloaded \n ✅" )
-                    print(f"Total caps downloaded: {capComplete} \n " + "Progress: " + str((capComplete/maxCap)*100) + "%") 
                     
             except Exception as e:
-                print(f"Error: {e}")
+                print(f"")
                 errors_in_download += 1
                 continue                           
-                       
-                   
+            finally:
+                capComplete += 1
+                print(f"Cap {i} downloaded  ✅" )
+                print(f"Total caps downloaded: {capComplete} \n " + "Progress: " + str((capComplete/maxCap)*100) + "%") 
                         
-
-
+                
 def parseHtml(content):
     return BeautifulSoup(content, 'json.parser')
 
