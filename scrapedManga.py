@@ -5,12 +5,12 @@ from bs4 import BeautifulSoup
 import json
 from cap import cap
 
-
+dir_saved = str(input("Enter the path to the save Manga: "))
 urlPri = str(input("Enter the path to the file: "))
 maxCap = int(input("Enter the number of cap: ")) 
 name = str(input("Enter the name of the manga: "))
 def download(urlPri, maxCap):
-    dir_path = path.join('.',name)
+    dir_path = path.join(dir_saved,name)
     try:
         mkdir(dir_path)
     except Exception as e:  
