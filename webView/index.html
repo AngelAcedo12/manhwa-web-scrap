@@ -6,15 +6,32 @@
     <title>Document</title>
 </head>
 <style>
+    html{
+        margin: 0;
+        padding: 0;
+
+    }
+    body{
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100dvh;
+        background-color: #f1f1f1;
+    }
     #imgs{
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
         flex-direction: column;
         align-items: center;
-        margin:0 auto;
+        justify-content: center;
+        margin:0 35%;
+        @media (max-width: 768px){
+            margin: 0 0;
+            
+        }
     }   
     img{
+        width: 100%;
         display: flex;
         object-fit: contain;
     }
@@ -80,7 +97,7 @@
             
             imgsSort = res.sort((a, b) => a.id - b.id);
             for (let i = 0; i < imgsSort.length; i++) {
-                    console.log(imgsSort[i].id)
+                    
                     let img = document.createElement('img')
                     img.src = imgsSort[i].src
                     imgDiv.appendChild(img)

@@ -46,9 +46,13 @@ class scapeManga:
                 # Create an object cap from the json
 
                 cap = self.jsonToObj(jsonContent)
-                with open(path.join(dir_path, file_name, f'{cap.name}.json'), 'w') as file:
-                    file.write(content)
-                    file.close()
+                try:
+                    with open(path.join(dir_path, file_name, f'{self.refactorDirName(cap.name)}.json'), 'w') as file:
+                        file.write(content)
+                        file.close()
+                except Exception as e:
+                    print(f"Error: {e}")
+                    pass
                 count = 1
                 for img in cap.imgUrls:
                     suffix = PurePath(img).suffix
