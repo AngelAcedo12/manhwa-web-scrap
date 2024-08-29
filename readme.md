@@ -1,8 +1,4 @@
-# Este repo es para fines educativos 
-
-Utiliza la api de Manhwa Web
-
-
+## *!Este script ha sido creado solo para fines educativos no para lucrase!*
 
 ###### Para iniciar la app se tiene que ejecutar el main.py 
 
@@ -14,4 +10,3 @@ Utiliza la api de Manhwa Web
 
 
 
-## *!Este script ha sido creado solo para fines educativos no para lucrase!*

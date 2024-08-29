@@ -2,10 +2,18 @@ from scrapedManga import scapeManga
 import time
 from convertTime import convertTime 
 import threading 
+from jsonParse import jsonParse
+from fastapi import FastAPI
+
+
+dirPath = 'C:/Users/Usuario/Downloads/manga'
+
+
+
 def dowmloadManga():
-    dir_saved = str(input("Enter the path to the save Manga: "))
+   
     id = str(input("Enter the id: "))
-    scrape = scapeManga(dir_saved=dir_saved, id=id)
+    scrape = scapeManga(dir_saved=dirPath, id=id)
     initTime = time.time()
     status = scrape.obteinManga()
     if status:
@@ -14,16 +22,31 @@ def dowmloadManga():
     else:
         print("Error downloading manga ❌")
 
+def loadConfig():
+    try: 
+        with open('config.json','r') as file:
+            content = file.read()
+            file.close()
+            json = jsonParse(content)
+            dirPath = json["localPath"]
+            print(f"\n \n --- Local path: {dirPath} --- \n \n" )
+
+       
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
+    
 
 def main():
-
+    loadConfig()
     print("1. Download manga")
-    print("2. Exit")
+    print("2. Iniciar API")
+    print("3. Exit")
     option = int(input("Enter an option: "))
     if option == 1:
         threading.Thread(dowmloadManga()).start()
         main()
-    elif option == 2:
+    elif option == 3:
         exit()
     else:
         print("Invalid option")
@@ -31,12 +54,19 @@ def main():
 
 
 
-if __name__ == '__main__':
-  
-        try:
-            main()
-        except Exception as e:
-            print(f"Error: {e}")
+try:
+    main()
+except Exception as e:
+    print(f"Error: {e}")
+    main()
+
+
+
+
+
+
+
+
           
     
     
