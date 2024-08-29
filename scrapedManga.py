@@ -10,7 +10,11 @@ import threading
 from convertTime import convertTime
 import time
 class scapeManga:
-    
+    # Configuration parants
+    optimizedImg= True
+    replaceOptimized= False
+    removeOriginal= True
+    debug = False
     dir_saved = ''
     id = ''
     urlPri = ''
@@ -51,7 +55,8 @@ class scapeManga:
                         file.write(content)
                         file.close()
                 except Exception as e:
-                    print(f"Error: {e}")
+                    if self.debug:
+                        print(f"Error: {e}")  
                     pass
                 count = 1
                 for img in cap.imgUrls:
@@ -63,15 +68,17 @@ class scapeManga:
                         # Save the image
                         numberFile = str(count)
                         existFile = path.exists(path.join(dir_path, file_name, f'{numberFile}.webp'))
-                        if existFile == False:
-
+                        
+                        if existFile == False or self.replaceOptimized: 
+                            
                             with open(path.join(dir_path, file_name, oldPath), 'wb') as file: 
                                 
                                 file.write(imgResponse.content)
                                 file.close()
-
+                                
 
                             if suffix == '.jpg' or suffix == '.jpeg':
+
                                 oldPath = path.join(dir_path, file_name, f'{numberFile}{suffix}')
                                 threading.Thread(target=self.optimizedImage, args=(oldPath,)).start()
                         else: 
@@ -103,20 +110,21 @@ class scapeManga:
       
         print(f"Downloading {manga._nombre}... \n")
 
-        # print(f"Path: {dir_path} \n")
-        
         try:
             mkdir(dir_path)
           
         except Exception as e:  
-            # print(f"Error: {e}")   
-            # print(f"Dir CREATE")
+            if self.debug:
+                print(f"Error: {e}")  
             pass	
-        
-        with open(path.join(dir_path, f'{self.refactorDirName(manga._nombre)}.json'),'w') as file:
-            file.write(jsonContent)
-            file.close()
-
+        try:
+            with open(path.join(dir_path, f'{self.refactorDirName(manga._nombre)}.json'),'w') as file:
+                file.write(jsonContent)
+                file.close()
+        except Exception as e:
+            if self.debug:
+                print(f"Error: {e}")  
+            pass
         for i in range(1, maxCap+1):
                 # Create the URL for the cap
                 initTime = time.time()
@@ -128,13 +136,15 @@ class scapeManga:
                 try: 
                     mkdir(path.join(dir_path, file_name),dir_fd=None)
                 except Exception as e:
-                    print(f"")
+                    if self.debug:
+                        print(f"Error: {e}")  
             
                 try:
                     self.downloadCap(url, dir_path, file_name)    
                    
                 except Exception as e:
-                    # print(f"Error: {e}")
+                    if self.debug:
+                        print(f"Error: {e}")  
                     continue                           
                 finally:
                     capComplete += 1
@@ -163,8 +173,8 @@ class scapeManga:
 
     # Optimize the image using the optimizer class 
     def optimizedImage(self, path):
-        op = optimizer(path,  'WEBP')
-        responseOptimize = op.optimize()
+        op = optimizer(path,  'WEBP',10)
+        responseOptimize = op.optimize(removed=self.removeOriginal)
         if(responseOptimize):
             # print(f"Optimized {path} ✅")
             pass
