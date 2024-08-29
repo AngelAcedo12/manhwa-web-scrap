@@ -2,7 +2,7 @@
  "optimizedImg": true,
  "replaceOptimized": true, 
  "removeOriginal": true, 
- "debug": true, 
+ "debug": false, 
  "quality": 10, 
  "localPath": "C:\\Users\\angel\\Documents\\mangas"
 }

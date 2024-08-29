@@ -18,17 +18,27 @@ class scapeManga:
     removeOriginal= True
     quality = 10
     debug = False
-    dir_saved = ''
+
     id = ''
     urlPri = ''
     urlPriObteinManga = ''
+    uriLastRelated = '' 
     localPath = ''
 
-    def __init__(self, dir_saved, id):
-        self.dir_saved = dir_saved
+    def __init__(self, id):
+
         self.id = id
         self.urlPri = f'https://manhwawebbackend-production.up.railway.app/chapters/see/{id}'
         self.urlPriObteinManga = f'https://manhwawebbackend-production.up.railway.app/manhwa/see/{id}'
+        self.uriLastRelated = f'https://manhwawebbackend-production.up.railway.app/manhwa/nuevos'
+        self.loadConfig()
+        pass
+
+    def __init__(self):
+        self.id = id
+        self.urlPri = f'https://manhwawebbackend-production.up.railway.app/chapters/see/{id}'
+        self.urlPriObteinManga = f'https://manhwawebbackend-production.up.railway.app/manhwa/see/{id}'
+        self.uriLastRelated = f'https://manhwawebbackend-production.up.railway.app/manhwa/nuevos'
         self.loadConfig()
         pass
     
@@ -140,7 +150,7 @@ class scapeManga:
                 print(f"Error: {e}")  
             	
         try:
-            with open(path.join(dir_path, f'{refactorDirName(manga._nombre)}.json'),'w') as file:
+            with open(path.join(dir_path, f'{refactorDirName(manga._nombre)}.json'),'w', encoding="utf-8") as file:
                 file.write(jsonContent)
                 file.close()
         except Exception as e:
@@ -204,6 +214,27 @@ class scapeManga:
             print(f"Error optimizing {path} ❌")
 
 
+    def obteinLastRelated(self):
+        response = get(self.uriLastRelated)
+        if response.ok:
+            content = response.text
+            json_content = jsonParse(content)
+            try:
+                mkdir(path.join(self.localPath,'lastRelated'))
+            except Exception as e:  
+                if self.debug:
+                    print(f"Error: {e}")
+                pass
+            
+            with open(path.join(self.localPath,'lastRelated','lastRelated.json'),'w', encoding="utf-8") as file:
+            
+                file.write(content)
+                file.close()
 
+            print(f"Obtenido: Last related ✅ \n")
+            return json_content
+        else:
+            print('Error al obtener el manga: '+ response.status_code)
+            return {}
 
 
