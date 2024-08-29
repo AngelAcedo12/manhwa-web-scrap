@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from jsonParse import jsonParse
-from os import path
+from os import path,listdir
 from formaters import refactorDirName
 from pathlib import PurePath
+from scrapedManga import scapeManga
 
 class config: 
     localPath: str
@@ -30,14 +31,19 @@ app = FastAPI()
 def read_root():
     return {"Hello": "World"}
 
-@app.get("/see/{name}")
-async def read_item(name:str):
-    print(config.localPath)
-    route = path.join(config.localPath,refactorDirName(name),f'{refactorDirName(name)}.json')
-    print(route)
-    with open(route, 'r') as file:    
-        content = file.read()
-        file.close()
-        return jsonParse(content)   
-    
+@app.get("/see/{id}")
+async def read_item(id:str):
+    s = scapeManga()
+    s.id = id
+    return s.obteinUrlManga(id)
+        
+@app.get("/see/{id}/{cap}")
+async def read_item(id:str,cap:int):
+    s = scapeManga()
+    return s.obteinUrlCap(id,cap)
+
+@app.get("/last")
+async def read_item():
+    s = scapeManga()
+    return s.obteinLastRelated()    
 

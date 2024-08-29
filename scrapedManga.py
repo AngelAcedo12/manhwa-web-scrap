@@ -26,7 +26,6 @@ class scapeManga:
     localPath = ''
 
     def __init__(self, id):
-
         self.id = id
         self.urlPri = f'https://manhwawebbackend-production.up.railway.app/chapters/see/{id}'
         self.urlPriObteinManga = f'https://manhwawebbackend-production.up.railway.app/manhwa/see/{id}'
@@ -188,6 +187,7 @@ class scapeManga:
                             
     # Get the manga from the URL
     def obteinManga(self):
+        
         response = get(self.urlPriObteinManga)
 
         if response.ok:
@@ -238,3 +238,38 @@ class scapeManga:
             return {}
 
 
+    def obteinUrlManga(self,id):
+
+        response = get(f'https://manhwawebbackend-production.up.railway.app/manhwa/see/{id}')
+
+        if response.ok:
+            content = response.text
+            jsonContent = jsonParse(content)
+
+            return {"data":jsonContent}
+        else:
+    
+            return {"error": "Error al obtener el manga"}  
+    
+    def obteinUrlCap(self,id,cap):
+        response = get(f'https://manhwawebbackend-production.up.railway.app/chapters/see/{id}-{cap}')
+
+        if response.ok:
+            content = response.text
+            jsonContent = jsonParse(content)
+          
+            return {"data":jsonContent}
+        else:
+    
+            return {"error": "Error al obtener el manga"}
+        
+    def obteinUrlLasted(self):
+        response = get('https://manhwawebbackend-production.up.railway.app/manhwa/nuevos')
+
+        if response.ok:
+            content = response.text
+            jsonContent = jsonParse(content)
+            return {"data":jsonContent}
+        else:
+    
+            return {"error": "Error al obtener el manga"}

@@ -5,13 +5,9 @@ import threading
 from jsonParse import jsonParse
 from fastapi import FastAPI
 
-
 dirPath = 'C:/Users/Usuario/Downloads/manga'
 
-
-
 def dowmloadManga():
-   
     id = str(input("Enter the id: "))
     scrape = scapeManga(id=id)
     initTime = time.time()
@@ -22,10 +18,13 @@ def dowmloadManga():
     else:
         print("Error downloading manga ❌")
 
+
 def lastRelated():
     scrape = scapeManga()
     initTime = time.time()
     scrape.obteinLastRelated()
+
+
 
 def loadConfig():
     try: 
@@ -58,8 +57,6 @@ def main():
     else:
         print("Invalid option")
         main()
-        
-
 
 try:
     main()
